@@ -1,11 +1,7 @@
 import { MemberProfileView } from '@/components/members/member-profile-view'
-import { notFound } from 'next/navigation'
 
-// Server Component - fetches member data
-async function getMemberData(id: string) {
-  // In production, this would fetch from your API
-  await new Promise((resolve) => setTimeout(resolve, 100)) // Simulate API delay
-
+// Get member data (static for GitHub Pages)
+function getMemberData(id: string) {
   // Mock member data - in production, fetch by ID
   const mockMember = {
     id,
@@ -32,15 +28,28 @@ async function getMemberData(id: string) {
   return mockMember
 }
 
-export default async function MemberDetailPage({
+// Generate static params for static export
+export async function generateStaticParams() {
+  // Return known member IDs for static generation
+  // In a real app, this would fetch from your data source
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ]
+}
+
+export const dynamicParams = false
+
+export default function MemberDetailPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const member = await getMemberData(params.id)
+  const member = getMemberData(params.id)
 
   if (!member) {
-    notFound()
+    return <div>Member not found</div>
   }
 
   return (

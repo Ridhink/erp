@@ -1,11 +1,7 @@
 import { CustomerIntelligenceView } from '@/components/leads/customer-intelligence-view'
-import { notFound } from 'next/navigation'
 
-// Server Component - fetches lead data
-async function getLeadData(id: string) {
-  // In production, this would fetch from your API
-  await new Promise((resolve) => setTimeout(resolve, 100)) // Simulate API delay
-
+// Get lead data (static for GitHub Pages)
+function getLeadData(id: string) {
   // Mock lead data - in production, fetch by ID
   const mockLead = {
     id,
@@ -73,15 +69,28 @@ async function getLeadData(id: string) {
   return mockLead
 }
 
-export default async function LeadDetailPage({
+// Generate static params for static export
+export async function generateStaticParams() {
+  // Return known lead IDs for static generation
+  // In a real app, this would fetch from your data source
+  return [
+    { id: '1' },
+    { id: '2' },
+    { id: '3' },
+  ]
+}
+
+export const dynamicParams = false
+
+export default function LeadDetailPage({
   params,
 }: {
   params: { id: string }
 }) {
-  const lead = await getLeadData(params.id)
+  const lead = getLeadData(params.id)
 
   if (!lead) {
-    notFound()
+    return <div>Lead not found</div>
   }
 
   return (

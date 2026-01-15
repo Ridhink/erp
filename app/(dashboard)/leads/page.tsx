@@ -204,20 +204,10 @@ function LeadsTableSkeleton() {
   )
 }
 
-export default async function LeadsPage({
-  searchParams,
-}: {
-  searchParams: {
-    page?: string
-    limit?: string
-    sortBy?: string
-    sortOrder?: 'asc' | 'desc'
-    search?: string
-    status?: string
-    source?: string
-  }
-}) {
-  const data = await getLeadsData(searchParams)
+// Static page for static export - searchParams handled client-side
+export default async function LeadsPage() {
+  // Use default/empty params for static generation
+  const data = await getLeadsData({})
 
   return (
     <div className="space-y-6">
@@ -296,7 +286,7 @@ export default async function LeadsPage({
 
       {/* Leads Table */}
       <Suspense fallback={<LeadsTableSkeleton />}>
-        <LeadsTable initialData={data.leads} searchParams={searchParams} />
+        <LeadsTable initialData={data.leads} searchParams={{}} />
       </Suspense>
     </div>
   )

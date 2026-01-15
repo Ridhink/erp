@@ -30,7 +30,8 @@ export function UserTable({ initialData, searchParams }: UserTableProps) {
 
   const debouncedSearch = React.useMemo(
     () =>
-      debounce((value: string) => {
+      debounce((...args: unknown[]) => {
+        const value = typeof args[0] === 'string' ? args[0] : ''
         const newParams = new URLSearchParams(params.toString())
         if (value) {
           newParams.set('search', value)

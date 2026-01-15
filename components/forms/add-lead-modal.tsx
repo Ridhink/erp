@@ -105,7 +105,7 @@ export function AddLeadModal({ isOpen, onClose, onSubmit }: AddLeadModalProps) {
           Add leads individually or upload in bulk
         </p>
 
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="individual">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger
               value="individual"

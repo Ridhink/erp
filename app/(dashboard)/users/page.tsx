@@ -19,13 +19,13 @@ async function getUsers(searchParams: {
   const page = Number(searchParams.page) || 1
   const limit = Number(searchParams.limit) || 25
 
-  // Mock data
-  const roles = ['admin', 'manager', 'user', 'viewer'] as const
+  // Mock data - using correct UserRole types
+  const roles: ('admin' | 'lead' | 'sales')[] = ['admin', 'lead', 'sales']
   const mockUsers = Array.from({ length: 50 }, (_, i) => ({
     id: `user-${i + 1}`,
     name: `User ${i + 1}`,
     email: `user${i + 1}@example.com`,
-    role: roles[i % 4],
+    role: roles[i % 3] as 'admin' | 'lead' | 'sales',
     createdAt: new Date(Date.now() - i * 86400000).toISOString(),
     updatedAt: new Date(Date.now() - i * 86400000).toISOString(),
   }))
@@ -84,18 +84,10 @@ function UsersTableSkeleton() {
   )
 }
 
-export default async function UsersPage({
-  searchParams,
-}: {
-  searchParams: {
-    page?: string
-    limit?: string
-    sortBy?: string
-    sortOrder?: 'asc' | 'desc'
-    search?: string
-  }
-}) {
-  const data = await getUsers(searchParams)
+// Static page for static export - searchParams handled client-side
+export default async function UsersPage() {
+  // Use default/empty params for static generation
+  const data = await getUsers({})
 
   return (
     <div className="space-y-6">
@@ -116,7 +108,7 @@ export default async function UsersPage({
       <Suspense fallback={<UsersTableSkeleton />}>
         <UserTable
           initialData={data}
-          searchParams={searchParams}
+          searchParams={{}}
         />
       </Suspense>
     </div>

@@ -101,7 +101,8 @@ export function LeadsTable({ initialData, searchParams }: LeadsTableProps) {
 
   const debouncedSearch = React.useMemo(
     () =>
-      debounce((value: string) => {
+      debounce((...args: unknown[]) => {
+        const value = typeof args[0] === 'string' ? args[0] : ''
         const params = new URLSearchParams(window.location.search)
         if (value) {
           params.set('search', value)

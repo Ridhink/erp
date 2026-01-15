@@ -24,6 +24,9 @@ const nextConfig: NextConfig = {
   
   // Ensure trailing slash for GitHub Pages compatibility
   trailingSlash: true,
+  
+  // Skip dynamic routes during static export (they'll be handled client-side)
+  skipTrailingSlashRedirect: true,
 };
 
 export default nextConfig;

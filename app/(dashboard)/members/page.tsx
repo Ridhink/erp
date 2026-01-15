@@ -155,22 +155,12 @@ function MembersTableSkeleton() {
   )
 }
 
-export default async function MembersPage({
-  searchParams,
-}: {
-  searchParams: {
-    page?: string
-    limit?: string
-    sortBy?: string
-    sortOrder?: 'asc' | 'desc'
-    search?: string
-    role?: string
-    tab?: string
-  }
-}) {
-  const data = await getMembersData(searchParams)
+// Static page for static export - searchParams handled client-side
+export default async function MembersPage() {
+  // Use default/empty params for static generation
+  const data = await getMembersData({})
   const teams = await getTeamsData()
-  const activeTab = searchParams.tab || 'all'
+  const activeTab = 'all' // Default tab for static generation
 
   return (
     <div className="space-y-6">
@@ -216,7 +206,7 @@ export default async function MembersPage({
           <MembersTabs activeTab={activeTab} />
         </Suspense>
         <Suspense fallback={<MembersTableSkeleton />}>
-          <MembersTable initialData={data} searchParams={searchParams} activeTab={activeTab} />
+          <MembersTable initialData={data} searchParams={{}} activeTab={activeTab} />
         </Suspense>
       </div>
     </div>
